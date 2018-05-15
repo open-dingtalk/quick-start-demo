@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-cmn">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <title>钉钉免登demo</title>
+    <script src="http://g.alicdn.com/dingding/open-develop/1.6.9/dingtalk.js"></script>
+    <script src="./js/jquery-3.1.0.js"></script>
+    <script>
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+        $(document).ready(function () {
+            //获取当前页面URL
+            var url = window.location.href;
+            //从URL中取出corpid参数
+            var corpId = getUrlParameter('corpId');
+            dd.ready(function () {
+                dd.runtime.permission.requestAuthCode({
+                    corpId: corpId, //企业id
+                    onSuccess: function (info) {
+                        console.log('info result', info);
+                        $.ajax({
+                            url: 'login',
+                            type: "POST",
+                            data: {
+                                "requestAuthCode": info.code,
+                                "corpId": corpId
+                            },
+                            dataType: 'json',
+                            timeout: 30000,
+                            success: function (data, status, xhr) {
+                                console.log('data result', data);
+                                if (data.errcode === '0') {
+                                    $('#user-id').html('userid: ' + data.userId);
+                                    $('#corp-name').html('corpname: ' + data.corpName);
+                                }
+                                else {
+                                    $('login-result').html('用户信息获取失败: ' + data.errmsg);
+                                }
+                            },
+                            error: function (xhr, errorType, error) {
+                                $('#login-result').html('用户信息获取失败: ' + xhr + " type:" + errorType + " error: " + error);
+                                console.log(errorType + ', ' + error);
+                            }
+                        });
+                    }
+                })
+            })
+            dd.error(function (err) {
+                $('#conf-result').html('配置失败：' + err);
+                console.log('dd error: ', err);
+            });
+
+        })
+    </script>
+</head>
+<body>
+<p id="url-p">
+</p>
+<p id="conf-result">
+    配置中...
+</p>
+<p id="login-result"></p>
+<p id="user-id"></p>
+<p id="corp-name"></p>
+</body>
+</html>
