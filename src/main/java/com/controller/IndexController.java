@@ -28,7 +28,15 @@ public class IndexController {
 	@Resource
 	private OpenSyncBizDataMapper openSyncBizDataMapper;
 	@Resource
-	private HttpSDK httpSDK;
+	private HttpSDK httpSDappK;
+
+	/**
+	 * 欢迎页面
+	 */
+	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
+	public String welcome() {
+		return "welcome";
+	}
 
 	/**
 	 * 钉钉用户登录，显示当前登录的企业和用户
