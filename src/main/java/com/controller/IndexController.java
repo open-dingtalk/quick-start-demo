@@ -28,7 +28,7 @@ public class IndexController {
 	@Resource
 	private OpenSyncBizDataMapper openSyncBizDataMapper;
 	@Resource
-	private HttpSDK httpSDappK;
+	private HttpSDK httpSDK;
 
 	/**
 	 * 欢迎页面

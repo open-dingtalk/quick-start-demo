@@ -3,6 +3,7 @@
 INTELLIJ IDEA
 
 ##项目结构
+```
 ├── README.md
 ├── ding-demo.iml
 ├── pom.xml
@@ -49,7 +50,7 @@ INTELLIJ IDEA
                 ├── ApplicationTests.java
                 └── mapper
                     └── OpenSyncBizDataMapperTest.java
-
+```
                     
                 
 ##项目配置
